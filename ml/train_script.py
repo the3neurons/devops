@@ -37,7 +37,7 @@ def extract_features(image_paths):
     return np.vstack(feats)
 
 # 1. Load train and validation image paths
-base_path = "/kaggle/input/animals/animals/"
+base_path = "training-data"
 train_dir = base_path + "train"
 val_dir   = base_path + "val"
 
