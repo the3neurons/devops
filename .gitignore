@@ -38,3 +38,7 @@ terraform.rc
 
 # Large files
 data/
+
+# IDE
+.vscode/
+.idea/
