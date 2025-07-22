@@ -1,0 +1,9 @@
+flask
+joblib
+scikit-learn
+pytest
+azureml-core
+azureml-sdk
+numpy
+pillow
+

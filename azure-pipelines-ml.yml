@@ -1,0 +1,31 @@
+trigger: none
+
+resources:
+  pipelines:
+    - pipeline: ci
+      source: azure-pipelines.yml
+      trigger: true
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  AZUREML_WORKSPACE: mlwsthe3neurons
+  AZUREML_RG: rgthe3neurons
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.8'
+
+- script: |
+    python -m venv venv
+    source venv/bin/activate
+    pip install azureml-core azureml-sdk
+    python ml/train.py --workspace $(AZUREML_WORKSPACE) --resource-group $(AZUREML_RG)
+  displayName: 'Train on Azure ML'
+
+- script: |
+    source venv/bin/activate
+    az ml model register -n cvd-model -p outputs/model.joblib
+  displayName: 'Register model'
