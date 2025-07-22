@@ -1,8 +1,10 @@
-provider "azurerm" {
-  features {}
-}
-
 data "azurerm_client_config" "current" {}
+
+resource "random_string" "suffix" {
+  length  = 8
+  special = false
+  upper   = false
+}
 
 resource "azurerm_resource_group" "rg" {
   name     = var.rg-name
@@ -14,7 +16,7 @@ resource "azurerm_storage_account" "sa" {
   resource_group_name      = azurerm_resource_group.rg.name
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
-  account_replication_type = "LRS" // Replicated 3 times in a single datacenter
+  account_replication_type = "LRS"
 }
 
 resource "azurerm_storage_container" "training-data" {
@@ -24,33 +26,49 @@ resource "azurerm_storage_container" "training-data" {
 }
 
 resource "azurerm_container_registry" "container-registry" {
-  name                = "crthe3neurons"
-  location            = var.location
-  resource_group_name = var.rg-name
-  sku                 = "Basic" // Cheapest tier
+  name                = "cr${random_string.suffix.result}"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  sku                 = "Basic"
 }
 
 resource "azurerm_application_insights" "ai" {
-  name                = "aithe3neurons"
-  location            = var.location
-  resource_group_name = var.rg-name
+  name                = "ai${random_string.suffix.result}"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   application_type    = "web"
 }
 
 resource "azurerm_key_vault" "kv" {
-  name                = "kvthe3neurons"
-  location            = var.location
-  resource_group_name = var.rg-name
+  name                = "kv${random_string.suffix.result}"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   tenant_id           = data.azurerm_client_config.current.tenant_id
   sku_name            = "standard"
+
+  # Required for Key Vault
+  access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = data.azurerm_client_config.current.object_id
+
+    key_permissions = [
+      "Get", "List", "Update", "Create", "Import", "Delete", "Recover",
+      "Backup", "Restore", "Decrypt", "Encrypt", "UnwrapKey", "WrapKey",
+      "Verify", "Sign", "Purge"
+    ]
+
+    secret_permissions = [
+      "Get", "List", "Set", "Delete", "Recover", "Backup", "Restore", "Purge"
+    ]
+  }
 }
 
 resource "azurerm_machine_learning_workspace" "ml-ws" {
-  name                    = "mlwsthe3neurons"
+  name                    = "mlws${random_string.suffix.result}"  # ✅ Make unique
   application_insights_id = azurerm_application_insights.ai.id
   key_vault_id            = azurerm_key_vault.kv.id
-  location                = var.location
-  resource_group_name     = var.rg-name
+  location                = azurerm_resource_group.rg.location
+  resource_group_name     = azurerm_resource_group.rg.name
   storage_account_id      = azurerm_storage_account.sa.id
 
   identity {

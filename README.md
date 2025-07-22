@@ -55,3 +55,35 @@ Cat vs. dog classifier deployed on Azure using Terraform.
    ```bash
    az storage blob upload-batch --account-name stgthe3neurons --destination training-data --source ./training-data
    ```
+
+## Setup Terraform Backend
+
+To store the Terraform state on Azure, follow those steps:
+
+1. ```bash
+   az group create --name rg-terraform-backend --location "francecentral"
+   ```
+   
+2. ```bash
+   az storage account create --name stesgitbackend1 --resource-group rg-terraform-backend --location "francecentral" --sku Standard_LR
+   ```
+   
+3. ```bash
+   az storage container create --name tfstate --account-name stesgitbackend1
+   ```
+   
+4. ```bash
+   terraform destroy -var="location=francecentral" -auto-approve
+   ```
+   
+5. ```bash
+   rm -rf .terraform terraform.tfstate
+   ```
+   
+6. ```bash
+   terraform init
+   ```
+
+7. ```bash
+   terraform apply -auto-approve 
+   ```
