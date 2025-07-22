@@ -6,18 +6,19 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--workspace", required=True)
     parser.add_argument("--resource-group", required=True)
+    parser.add_argument("--subscription-id", required=True)
     args = parser.parse_args()
 
     ws = Workspace.get(
         name=args.workspace,
         resource_group=args.resource_group,
-        subscription_id=None
+        subscription_id=args.subscription_id,
     )
     exp = Experiment(ws, "cat-vs-dog-training")
 
     config = ScriptRunConfig(
-        source_directory=".",
-        script="ml/train_script.py",
+        source_directory="ml",
+        script="train_script.py",
         compute_target="cpu-cluster"
     )
 
