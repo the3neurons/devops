@@ -23,6 +23,14 @@ resource "azurerm_storage_container" "models" {
   container_access_type = "private"
 }
 
+resource "azurerm_service_plan" "asp" {
+  name                = var.service-plan
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  os_type             = "Linux"
+  sku_name            = "B2"
+}
+
 resource "azurerm_linux_web_app" "app" {
   name                = var.sa-name-webapp
   location            = azurerm_resource_group.rg.location

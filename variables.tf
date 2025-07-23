@@ -33,3 +33,9 @@ variable "sa-name-webapp" {
   type        = string
   default     = ""
 }
+
+variable "service-plan" {
+  description = "Service plan name"
+  type        = string
+  default     = "" 
+}
