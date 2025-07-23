@@ -15,10 +15,12 @@ steps:
   inputs:
     terraformVersion: '1.12.2'
 
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'Azure for Students Starter(26e343c1-e278-49f7-9847-4afa8c7a4ced)'
+    backendAzureRmResourceGroupName: 'rg-terraform-backend'
+    backendAzureRmStorageAccountName: 'stesgitbackend1'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'terraform.tfstate'
