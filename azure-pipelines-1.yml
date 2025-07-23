@@ -1,5 +1,5 @@
 parameters:
-- name: model_sas_token
+- name: models_sas_token
   displayName: SAS Token for models storage container
   default: ""
 
