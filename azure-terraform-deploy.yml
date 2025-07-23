@@ -1,6 +1,27 @@
 trigger:
 - none
 
+parameters:
+  - name: mysql_user
+    displayName: MySQL username
+    type: string
+    default: ""
+
+  - name: mysql_password
+    displayName: MySQL password
+    type: string
+    default: ""
+
+  - name: mysql_dbname
+    displayName: MySQL database name
+    type: string
+    default: ""
+
+  - name: mysql_server_name
+    displayName: MySQL server name
+    type: string
+    default: ""
+
 pool:
   vmImage: ubuntu-latest
 
@@ -14,10 +35,10 @@ steps:
     provider: 'azurerm'
     command: 'init'
     backendServiceArm: 'Azure for Students Starter(26e343c1-e278-49f7-9847-4afa8c7a4ced)'
-    backendAzureRmResourceGroupName: '${{ parameters.backendAzureRmResourceGroupName }}'
-    backendAzureRmStorageAccountName: '${{ parameters.backendAzureRmStorageAccountName }}'
-    backendAzureRmContainerName: '${{ parameters.backendAzureRmContainerName }}'
-    backendAzureRmKey: '${{ parameters.backendAzureRmKey}}'
+    backendAzureRmResourceGroupName: 'rg-terraform-backend'
+    backendAzureRmStorageAccountName: 'stesgitbackend1'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'terraform.tfstate'
 
 - task: TerraformTask@5
   inputs:
