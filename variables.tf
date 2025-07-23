@@ -16,8 +16,20 @@ variable "sa-name" {
   default     = "stgthe3neurons"
 }
 
-variable "vm-username" {
-  description = "Name of the user in the VM"
+variable "mysql_user" {
+  description = "MySQL username"
   type = string
-  default = "the3neurons_user"
+  default = "fake_user"
+}
+
+variable "mysql_password" {
+  description = "MySQL password"
+  type = string
+  default = "Fake_password_0"
+}
+
+variable "mysql_dbname" {
+  description = "MySQL database name"
+  type = string
+  default = "fake-dbname"
 }
