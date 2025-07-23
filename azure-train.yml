@@ -30,7 +30,7 @@ steps:
     azureSubscription: 'Azure for Students Starter(26e343c1-e278-49f7-9847-4afa8c7a4ced)'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az storage blob download-batch --destination python/ml/training-data --pattern "*" --source "${{ parameters.training_data_source }}" --account-name "${{ parameters.storage_account_name }}" --sas-token "${{ parameters.sas_token }}" && pwd'
+    inlineScript: 'az storage blob download-batch --destination python/ml/training-data --pattern "*" --source "${{ parameters.training_data_source }}" --account-name "${{ parameters.storage_account_name }}" --sas-token "${{ parameters.sas_token }}"'
 
 - task: UsePythonVersion@0
   inputs:
@@ -39,7 +39,6 @@ steps:
     architecture: 'x64'
 
 - script: |
-    pwd
     python -m venv venv
     source venv/bin/activate
     pip install -r requirements.txt
@@ -51,4 +50,4 @@ steps:
     azureSubscription: 'Azure for Students Starter(26e343c1-e278-49f7-9847-4afa8c7a4ced)'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az storage blob upload --auth-mode login --account-name ${{ parameters.storage_account_name }} --container-name "${{ parameters.model_destination }}" --name "model.joblib" --file "outputs/model.joblib" --sas-token "${{ parameters.sas_token }}"'
+    inlineScript: 'az storage blob upload --account-name ${{ parameters.storage_account_name }} --container-name "${{ parameters.model_destination }}" --name "model.joblib" --file "outputs/model.joblib" --sas-token "${{ parameters.sas_token }}"'
