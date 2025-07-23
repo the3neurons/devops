@@ -19,16 +19,12 @@ steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script: 'zip -r python/backend/app.zip python/backend'
+    script: 'zip -r app.zip python/backend'
 
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: 'ls python/backend'
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure for Students(6c868bb4-0cbd-4f89-bab2-f4f40cc223c4)'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az webapp deploy --resource-group rgthe3neurons --name app-CKpJKaLE --src-path python/backend/app.zip'
+    inlineScript: 'az webapp deploy --resource-group rgthe3neurons --name app-CKpJKaLE --src-path app.zip'
 
