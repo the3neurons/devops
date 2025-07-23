@@ -24,5 +24,5 @@ steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script: 'az webapp deploy --resource-group rgthe3neurons --name app-CKpJKaLE --src-path python/backend/app.zip'
+    script: 'az webapp deploy --resource-group rgthe3neurons --name app-CKpJKaLE --src-path python/backend/app.zip --sas-token "${{ parameters.models_sas_token }}"'
 
