@@ -22,17 +22,13 @@ steps:
     script: 'zip -r python/backend/app.zip python/backend'
 
 
-- task: AzureCLI@2
+- task: Bash@3
   inputs:
-    azureSubscription: 'Azure for Students Starter(26e343c1-e278-49f7-9847-4afa8c7a4ced)'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: 'az webapp list --resource-group rgthe3neurons --query "[].name"  --sas-token "${{ parameters.models_sas_token }}'
+    targetType: 'inline'
+    script: 'az webapp list --resource-group rgthe3neurons --query "[].name"  --sas-token "${{ parameters.models_sas_token }}'
 
-- task: AzureCLI@2
+- task: Bash@3
   inputs:
-    azureSubscription: 'Azure for Students Starter(26e343c1-e278-49f7-9847-4afa8c7a4ced)'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: 'az webapp deploy --resource-group rgthe3neurons --name app-CKpJKaLE --src-path app.zip  --sas-token "${{ parameters.models_sas_token }}'
+    targetType: 'inline'
+    script: 'az webapp deploy --resource-group rgthe3neurons --name app-CKpJKaLE --src-path app.zip  --sas-token "${{ parameters.models_sas_token }}'
 
