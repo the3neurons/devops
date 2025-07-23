@@ -1,7 +1,4 @@
 parameters:
-- name: training_data_destination
-  displayName: Directory of destination for training data on CI/CD instance
-  default: ""
 - name: training_data_source
   displayName: Azure Storage Container name containing training data
   default: ""
@@ -22,7 +19,7 @@ steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script: 'mkdir ${{ parameters.training_data_destination }}'
+    script: 'mkdir python/ml/training-data'
 
 - task: AzureCLI@2
   inputs:
@@ -30,7 +27,7 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: 'az storage blob download-batch'
-    arguments: '--destination "${{ parameters.training_data_destination}}" --source "${{ paramaters.training_data_source }}" --account-name "${{ parameters.storage_account_name }}" --pattern "*"'
+    arguments: '--destination python/ml/training-data --source "${{ parameters.training_data_source }}" --account-name "${{ parameters.storage_account_name }}" --pattern "*"'
 
 - task: PythonScript@0
   inputs:
