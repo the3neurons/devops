@@ -33,3 +33,9 @@ variable "mysql_dbname" {
   type = string
   default = "fake-dbname"
 }
+
+variable "mysql_server_name" {
+  description = "MySQL server name"
+  type = string
+  default = "fake-server-name"
+}

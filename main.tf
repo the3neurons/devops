@@ -31,7 +31,7 @@ resource "azurerm_linux_web_app" "app" {
   service_plan_id     = azurerm_service_plan.asp.id
 
   app_settings = {
-    MYSQL_HOST                     = azurerm_mysql_flexible_server.mysql.fqdn
+    MYSQL_HOST                     = azurerm_mysql_flexible_server.mysql_server.fqdn
     MYSQL_USER                     = var.mysql_user
     MYSQL_PASSWORD                 = var.mysql_password
     MYSQL_DATABASE                 = var.mysql_dbname
@@ -58,8 +58,8 @@ resource "azurerm_linux_web_app" "app" {
   }
 }
 
-resource "azurerm_mysql_flexible_server" "mysql" {
-  name                   = var.mysql_dbname
+resource "azurerm_mysql_flexible_server" "mysql_server" {
+  name                   = var.mysql_server_name
   resource_group_name    = azurerm_resource_group.rg.name
   location               = var.location
   administrator_login    = var.mysql_user
@@ -70,15 +70,15 @@ resource "azurerm_mysql_flexible_server" "mysql" {
 
 resource "azurerm_mysql_flexible_server_configuration" "require_secure_transport" {
   name                = "require_secure_transport"
-  resource_group_name = azurerm_mysql_flexible_server.mysql.resource_group_name
-  server_name         = azurerm_mysql_flexible_server.mysql.name
+  resource_group_name = azurerm_mysql_flexible_server.mysql_server.resource_group_name
+  server_name         = azurerm_mysql_flexible_server.mysql_server.name
   value               = "OFF"
 }
 
 resource "azurerm_mysql_flexible_server_firewall_rule" "allow_azure_services" {
   name                = "AllowAzureServices"
   resource_group_name = azurerm_resource_group.rg.name
-  server_name         = azurerm_mysql_flexible_server.mysql.name
+  server_name         = azurerm_mysql_flexible_server.mysql_server.name
   start_ip_address    = "0.0.0.0"
   end_ip_address      = "0.0.0.0"
 }
@@ -89,4 +89,12 @@ resource "azurerm_service_plan" "asp" {
   resource_group_name = azurerm_resource_group.rg.name
   os_type             = "Linux"
   sku_name            = "B2"
+}
+
+resource "azurerm_mysql_flexible_database" "mysql_db" {
+  name                = var.mysql_dbname
+  resource_group_name = azurerm_resource_group.rg.name
+  server_name         = azurerm_mysql_flexible_server.mysql_server.name
+  charset             = "utf8"
+  collation           = "utf8_unicode_ci"
 }
