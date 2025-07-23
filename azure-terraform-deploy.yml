@@ -1,5 +1,5 @@
 trigger:
-- main
+- none
 
 pool:
   vmImage: ubuntu-latest
@@ -8,6 +8,16 @@ steps:
 - task: TerraformInstaller@1
   inputs:
     terraformVersion: '1.12.2'
+
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'Azure for Students Starter(26e343c1-e278-49f7-9847-4afa8c7a4ced)'
+    backendAzureRmResourceGroupName: 'rg-terraform-backend'
+    backendAzureRmStorageAccountName: 'stesgitbackend1'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'terraform.tfstate'
 
 - task: TerraformTask@5
   inputs:
