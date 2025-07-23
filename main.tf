@@ -114,11 +114,25 @@ resource "azurerm_linux_virtual_machine" "vm" {
   name                = "vm${random_string.suffix.result}"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  size                = "Standard_B1s"  # 1 vCPU, 1 GB RAM, ~$7.50/month
+  size                = "Standard_B1s"
   admin_username      = var.vm-username
 
   disable_password_authentication = true
   network_interface_ids = [
     azurerm_network_interface.ni.id
   ]
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "18.04-LTS"
+    version   = "18.04.6"
+  }
+
+  os_disk {
+    name                 = "osdisk-${random_string.suffix.result}"
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+    disk_size_gb         = 2
+  }
 }
