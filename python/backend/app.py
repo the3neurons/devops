@@ -4,8 +4,12 @@ import numpy as np
 import io
 import base64
 import joblib
-
+import os
 app = Flask(__name__)
+
+# print all file in directory and pwd
+print(os.listdir('.'))
+print(os.getcwd())
 model = joblib.load("model.joblib")
 
 def preprocess_image(image):
