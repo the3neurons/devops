@@ -47,7 +47,7 @@ resource "azurerm_linux_web_app" "app" {
     application_stack {
       python_version = "3.11"
     }
-    app_command_line = "flask run"
+    app_command_line = "pip install -r requirements.txt && flask run"
 
     always_on = true
 
@@ -55,7 +55,6 @@ resource "azurerm_linux_web_app" "app" {
       allowed_origins = ["*"]
     }
   }
-
   ftp_publish_basic_authentication_enabled       = true
   webdeploy_publish_basic_authentication_enabled = true
 
