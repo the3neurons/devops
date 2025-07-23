@@ -1,4 +1,5 @@
 parameters:
+
 - name: training_data_source
   displayName: Azure Storage Container name containing training data
   default: ""
@@ -13,7 +14,7 @@ parameters:
   default: ""
 
 trigger:
-- main
+- none
 
 pool:
   vmImage: ubuntu-latest
@@ -30,6 +31,18 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: 'az storage blob download-batch --destination python/ml/training-data --pattern "*" --source "${{ parameters.training_data_source }}" --account-name "${{ parameters.storage_account_name }}" --sas-token "${{ parameters.sas_token }}"'
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.11'
+    addToPath: true
+    architecture: 'x64'
+
+- script: |
+    python -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+  displayName: 'Install Python dependencies'
 
 - task: PythonScript@0
   inputs:
