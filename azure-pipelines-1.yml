@@ -23,7 +23,7 @@ steps:
 
 - task: AzureCLI@2
   inputs:
-    azureSubscription: 'Azure for Students Starter(26e343c1-e278-49f7-9847-4afa8c7a4ced)'
+    azureSubscription: 'Azure for Students(6c868bb4-0cbd-4f89-bab2-f4f40cc223c4)'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: 'az webapp deploy --resource-group rgthe3neurons --name app-CKpJKaLE --src-path python/backend/app.zip'
