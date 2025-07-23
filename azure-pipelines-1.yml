@@ -1,0 +1,30 @@
+parameters:
+- name: models_sas_token
+  displayName: SAS Token for models storage container
+  default: ""
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+
+- task: Bash@3  
+  inputs:
+    targetType: 'inline'
+    script: 'az storage blob download --container-name models --name model.joblib --file python/backend/model.joblib --account-name stgthe3neurons --sas-token "${{ parameters.models_sas_token }}"'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'zip -r app.zip python/backend'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'Azure for Students(6c868bb4-0cbd-4f89-bab2-f4f40cc223c4)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az webapp deploy --resource-group rgthe3neurons --name app-CKpJKaLE --src-path app.zip'
+
