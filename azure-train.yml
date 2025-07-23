@@ -8,8 +8,8 @@ parameters:
 - name: storage_account_name
   displayName: Storage account name
   default: ""
-- name: storage_account_key
-  displayName: Storage account key
+- name: sas_token
+  displayName: SAS Token
   default: ""
 
 trigger:
@@ -29,7 +29,7 @@ steps:
     azureSubscription: 'Azure for Students Starter(26e343c1-e278-49f7-9847-4afa8c7a4ced)'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az storage blob download-batch --destination python/ml/training-data --pattern "*" --source "${{ parameters.training_data_source }}" --account-name "${{ parameters.storage_account_name }}" --sas-token "${{ parameters.storage_account_key }}"'
+    inlineScript: 'az storage blob download-batch --destination python/ml/training-data --pattern "*" --source "${{ parameters.training_data_source }}" --account-name "${{ parameters.storage_account_name }}" --sas-token "${{ parameters.sas_token }}"'
 
 - task: PythonScript@0
   inputs:
