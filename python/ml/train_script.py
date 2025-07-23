@@ -41,7 +41,7 @@ def extract_features(image_paths):
 
 def main():
     # 1. Load train and validation image paths
-    base_path = "training-data/"
+    base_path = "python/ml/training-data/"
     train_dir = base_path + "train"
     val_dir   = base_path + "val"
 
