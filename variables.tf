@@ -28,12 +28,6 @@ variable "models-sc-name" {
   default = ""
 }
 
-variable "sa-name-webapp" {
-  description = "Name of the web app"
-  type        = string
-  default     = ""
-}
-
 variable "service-plan" {
   description = "Service plan name"
   type        = string

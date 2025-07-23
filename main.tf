@@ -3,6 +3,11 @@ resource "azurerm_resource_group" "rg" {
   location = var.location
 }
 
+resource "random_string" "name" {
+  length  = 8
+  special = false
+}
+
 resource "azurerm_storage_account" "sa" {
   name                     = var.sa-name
   resource_group_name      = azurerm_resource_group.rg.name
@@ -32,7 +37,7 @@ resource "azurerm_service_plan" "asp" {
 }
 
 resource "azurerm_linux_web_app" "app" {
-  name                = var.sa-name-webapp
+  name                = "app-${random_string.name.result}"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   service_plan_id     = azurerm_service_plan.asp.id
