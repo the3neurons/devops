@@ -24,7 +24,7 @@ steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script: 'python/backend'
+    script: 'ls python/backend'
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure for Students(6c868bb4-0cbd-4f89-bab2-f4f40cc223c4)'
