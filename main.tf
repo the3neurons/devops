@@ -37,12 +37,12 @@ resource "azurerm_linux_web_app" "app" {
   resource_group_name = azurerm_resource_group.rg.name
   service_plan_id     = azurerm_service_plan.asp.id
 
-  app_command_line = "flask run"
 
   site_config {
     application_stack {
       python_version = "3.11"
     }
+    app_command_line = "flask run"
 
     always_on = true
 
