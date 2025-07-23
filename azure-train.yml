@@ -9,8 +9,11 @@ parameters:
 - name: storage_account_name
   displayName: Storage account name
   default: ""
-- name: sas_token
-  displayName: SAS Token
+- name: training_data_sas_token
+  displayName: SAS Token for training data storage container
+  default: ""
+- name: model_sas_token
+  displayName: SAS Token for models storage container
   default: ""
 
 trigger:
@@ -30,7 +33,7 @@ steps:
     azureSubscription: 'Azure for Students Starter(26e343c1-e278-49f7-9847-4afa8c7a4ced)'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az storage blob download-batch --destination python/ml/training-data --pattern "*" --source "${{ parameters.training_data_source }}" --account-name "${{ parameters.storage_account_name }}" --sas-token "${{ parameters.sas_token }}"'
+    inlineScript: 'az storage blob download-batch --destination python/ml/training-data --pattern "*" --source "${{ parameters.training_data_source }}" --account-name "${{ parameters.storage_account_name }}" --sas-token "${{ parameters.training_data_sas_token }}"'
 
 - task: UsePythonVersion@0
   inputs:
@@ -50,4 +53,4 @@ steps:
     azureSubscription: 'Azure for Students Starter(26e343c1-e278-49f7-9847-4afa8c7a4ced)'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az storage blob upload --account-name ${{ parameters.storage_account_name }} --container-name "${{ parameters.model_destination }}" --name "model.joblib" --file "outputs/model.joblib" --sas-token "${{ parameters.sas_token }}"'
+    inlineScript: 'az storage blob upload --account-name ${{ parameters.storage_account_name }} --container-name "${{ parameters.model_destination }}" --name "model.joblib" --file "outputs/model.joblib" --sas-token "${{ parameters.model_sas_token }}"'
