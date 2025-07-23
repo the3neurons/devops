@@ -22,3 +22,31 @@ resource "azurerm_storage_container" "models" {
   storage_account_id    = azurerm_storage_account.sa.id
   container_access_type = "private"
 }
+
+resource "azurerm_linux_web_app" "app" {
+  name                = var.sa-name-webapp
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  service_plan_id     = azurerm_service_plan.asp.id
+
+  app_command_line = "flask run"
+
+  site_config {
+    application_stack {
+      python_version = "3.11"
+    }
+
+    always_on = true
+
+    cors {
+      allowed_origins = ["*"]
+    }
+  }
+
+  ftp_publish_basic_authentication_enabled       = true
+  webdeploy_publish_basic_authentication_enabled = true
+
+  identity {
+    type = "SystemAssigned"
+  }
+}
