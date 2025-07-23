@@ -8,6 +8,9 @@ parameters:
 - name: storage_account_name
   displayName: Storage account name
   default: ""
+- name: storage_account_key
+  displayName: Storage account key
+  default: ""
 
 trigger:
 - main
@@ -26,7 +29,7 @@ steps:
     azureSubscription: 'Azure for Students Starter(26e343c1-e278-49f7-9847-4afa8c7a4ced)'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az storage blob download-batch --destination python/ml/training-data --pattern "*" --source "${{ parameters.training_data_source }}" --account-name "${{ parameters.storage_account_name }}" --account-key "$(az storage account keys list --account-name stgthe3neurons --resource-group rgthe3neurons --query "[0].value" -o tsv)"'
+    inlineScript: 'az storage blob download-batch --destination python/ml/training-data --pattern "*" --source "${{ parameters.training_data_source }}" --account-name "${{ parameters.storage_account_name }}" --account-key "${{ parameters.storage_account_key }}"'
 
 - task: PythonScript@0
   inputs:
