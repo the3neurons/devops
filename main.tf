@@ -64,7 +64,7 @@ resource "azurerm_key_vault" "kv" {
 }
 
 resource "azurerm_machine_learning_workspace" "ml-ws" {
-  name                    = "mlws${random_string.suffix.result}"  # ✅ Make unique
+  name                    = "mlws${random_string.suffix.result}"
   application_insights_id = azurerm_application_insights.ai.id
   key_vault_id            = azurerm_key_vault.kv.id
   location                = azurerm_resource_group.rg.location
@@ -74,4 +74,23 @@ resource "azurerm_machine_learning_workspace" "ml-ws" {
   identity {
     type = "SystemAssigned"
   }
+}
+
+resource "azurerm_network_interface" "ni" {
+  name                = "ni${random_string.suffix.result}"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+}
+
+resource "azurerm_linux_virtual_machine" "vm" {
+  name                = "vm${random_string.suffix.result}"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  size                = "Standard_B1s"  # 1 vCPU, 1 GB RAM, ~$7.50/month
+  admin_username      = var.vm-username
+
+  disable_password_authentication = true
+  network_interface_ids = [
+    azurerm_network_interface.ni.id
+  ]
 }
