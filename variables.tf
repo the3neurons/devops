@@ -19,5 +19,5 @@ variable "sa-name" {
 variable "vm-username" {
   description = "Name of the user in the VM"
   type = string
-  default = "user"
+  default = "the3neurons_user"
 }
