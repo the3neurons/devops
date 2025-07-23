@@ -42,16 +42,12 @@ steps:
     python -m venv venv
     source venv/bin/activate
     pip install -r requirements.txt
-  displayName: 'Install Python dependencies'
-
-- task: PythonScript@0
-  inputs:
-    scriptSource: 'filePath'
-    scriptPath: 'python/ml/train_script.py'
+    python python/ml/train_script.py
+  displayName: 'Training'
 
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure for Students Starter(26e343c1-e278-49f7-9847-4afa8c7a4ced)'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az storage blob upload --auth-mode login --account-name ${{ parameters.storage_account_name }} --container-name "${{ parameters.model_destination }}" --name "model.joblib" --file "outputs/model.joblib"'
+    inlineScript: 'az storage blob upload --auth-mode login --account-name ${{ parameters.storage_account_name }} --container-name "${{ parameters.model_destination }}" --name "model.joblib" --file "outputs/model.joblib" --sas-token "${{ parameters.sas_token }}"'
