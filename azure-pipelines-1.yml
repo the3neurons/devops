@@ -21,14 +21,8 @@ steps:
     targetType: 'inline'
     script: 'zip -r python/backend/app.zip python/backend'
 
-
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script: 'az webapp list --resource-group rgthe3neurons --query "[].name"  --sas-token "${{ parameters.models_sas_token }}'
-
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: 'az webapp deploy --resource-group rgthe3neurons --name app-CKpJKaLE --src-path app.zip  --sas-token "${{ parameters.models_sas_token }}'
+    script: 'az webapp deploy --resource-group rgthe3neurons --name app-CKpJKaLE --src-path app.zip --sas-token "${{ parameters.models_sas_token }}'
 
