@@ -1,0 +1,46 @@
+parameters:
+- name: training_data_destination
+  displayName: Directory of destination for training data on CI/CD instance
+  default: ""
+- name: training_data_source
+  displayName: Azure Storage Container name containing training data
+  default: ""
+- name: model_destination
+  displayName: Azure Storage Container name that will contain the model
+  default: ""
+- name: storage_account_name
+  displayName: Storage account name
+  default: ""
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'mkdir ${{ parameters.training_data_destination }}'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'Azure for Students Starter(26e343c1-e278-49f7-9847-4afa8c7a4ced)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az storage blob download-batch'
+    arguments: '--destination "${{ parameters.training_data_destination}}" --source "${{ paramaters.training_data_source }}" --account-name "${{ parameters.storage_account_name }}" --pattern "*"'
+
+- task: PythonScript@0
+  inputs:
+    scriptSource: 'filePath'
+    scriptPath: 'python/ml/train_script.py'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'Azure for Students Starter(26e343c1-e278-49f7-9847-4afa8c7a4ced)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az storage blob upload'
+    arguments: '--account-name ${{ parameters.storage_account_name }} --container-name "${{ parameters.model_destination }}" --name "model.joblib" --file "outputs/model.joblib"'
