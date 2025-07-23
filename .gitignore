@@ -38,6 +38,7 @@ terraform.rc
 
 # Large files
 training-data/
+outputs/
 
 # IDE
 .vscode/

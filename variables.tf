@@ -1,23 +1,29 @@
 variable "rg-name" {
   description = "Resource group name"
   type        = string
-  default     = "rgthe3neurons"
+  default     = ""
 }
 
 variable "location" {
   description = "Azure Region"
   type        = string
-  default     = "francecentral"
+  default     = ""
 }
 
 variable "sa-name" {
   description = "Storage account name"
   type        = string
-  default     = "stgthe3neurons"
+  default     = ""
 }
 
-variable "sc-name" {
-  description = "Storage container name"
+variable "training-data-sc-name" {
+  description = "Storage container name for the training data"
   type = string
-  default = "training-data"
+  default = ""
+}
+
+variable "models-sc-name" {
+  description = "Storage container name for the models"
+  type = string
+  default = ""
 }

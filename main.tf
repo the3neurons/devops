@@ -12,7 +12,13 @@ resource "azurerm_storage_account" "sa" {
 }
 
 resource "azurerm_storage_container" "training-data" {
-  name                  = var.sc-name
+  name                  = var.training-data-sc-name
+  storage_account_id    = azurerm_storage_account.sa.id
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_container" "models" {
+  name                  = var.models-sc-name
   storage_account_id    = azurerm_storage_account.sa.id
   container_access_type = "private"
 }
