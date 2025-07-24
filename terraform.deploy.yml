@@ -1,0 +1,29 @@
+trigger:
+- none
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: TerraformInstaller@1
+  inputs:
+    terraformVersion: '1.12.2'
+
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    environmentServiceNameAzureRM: 'Azure for Students(6c868bb4-0cbd-4f89-bab2-f4f40cc223c4)'
+    backendAzureRmResourceGroupName: 'rg-terraform-backend'
+    backendAzureRmStorageAccountName: 'stesgitbackend1'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'terraform.tfstate'
+  displayName: 'Terraform Init'
+
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    commandOptions: '-var="rg-name=rgthe3neurons" -var="location=francecentral" -var="sa-name=stgthe3neurons" -var="training-data-sc-name=training-data" -var="models-sc-name=models" -var="service-plan=spthe3neurons" -auto-approve'
+    backendServiceArm: 'Azure for Students(6c868bb4-0cbd-4f89-bab2-f4f40cc223c4)'
+  displayName: 'Terraform Apply'
