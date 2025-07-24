@@ -21,6 +21,7 @@ def preprocess_image(image):
 @app.route("/predict", methods=["POST"])
 def predict():
     # Récupère l'image (soit via multipart/form-data, soit base64)
+    print("Received request for prediction")
     if request.files.get("image"):
         file = request.files["image"]
         img = Image.open(file).convert("L")  # Convert to grayscale
