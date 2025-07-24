@@ -13,6 +13,7 @@ print(os.getcwd())
 model = joblib.load("model.joblib")
 
 def preprocess_image(image):
+    image = image.convert("L")
     image = image.resize((32, 32))
     image_array = np.array(image).astype("float32") / 255.0
     return image_array.flatten().reshape(1, -1)
@@ -22,11 +23,11 @@ def predict():
     # Récupère l'image (soit via multipart/form-data, soit base64)
     if request.files.get("image"):
         file = request.files["image"]
-        img = Image.open(file).convert("RGB")
+        img = Image.open(file).convert("L")  # Convert to grayscale
     else:
         data = request.get_json(force=True)
         img_bytes = base64.b64decode(data["image"])
-        img = Image.open(io.BytesIO(img_bytes)).convert("RGB")
+        img = Image.open(io.BytesIO(img_bytes)).convert("L")  # Convert to grayscale
 
     features = preprocess_image(img)
 
