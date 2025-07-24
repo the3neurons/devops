@@ -13,7 +13,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    environmentServiceNameAzureRM: 'Azure for Students(6c868bb4-0cbd-4f89-bab2-f4f40cc223c4)'
+    backendServiceArm: 'Azure for Students(6c868bb4-0cbd-4f89-bab2-f4f40cc223c4)'
     backendAzureRmResourceGroupName: 'rg-terraform-backend'
     backendAzureRmStorageAccountName: 'stesgitbackend1'
     backendAzureRmContainerName: 'tfstate'
