@@ -1,0 +1,29 @@
+trigger:
+- none
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: TerraformInstaller@1
+  inputs:
+    terraformVersion: '1.12.2'
+  displayName: 'Install Terraform'
+
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'Azure for Students(6c868bb4-0cbd-4f89-bab2-f4f40cc223c4)'
+    backendAzureRmResourceGroupName: 'rg-terraform-backend'
+    backendAzureRmStorageAccountName: 'stesgitbackend1'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'terraform.tfstate'
+  displayName: 'Terraform Init'
+
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'destroy'
+    environmentServiceNameAzureRM: 'Azure for Students(6c868bb4-0cbd-4f89-bab2-f4f40cc223c4)'
+  displayName: 'Terraform Destroy'
