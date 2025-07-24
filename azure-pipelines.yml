@@ -25,5 +25,6 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'destroy'
+    commandOptions: '-var="rg-name=rgthe3neurons" -var="location=francecentral" -var="sa-name=stgthe3neurons" -var="training-data-sc-name=training-data" -var="models-sc-name=models" -var="service-plan=spthe3neurons" -auto-approve'
     environmentServiceNameAzureRM: 'Azure for Students(6c868bb4-0cbd-4f89-bab2-f4f40cc223c4)'
   displayName: 'Terraform Destroy'
